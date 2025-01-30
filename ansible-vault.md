@@ -2,8 +2,7 @@
 {.is-info}
 
 > O Ansible Vault é um recurso do Ansible que permite que você mantenha dados sensíveis, como senhas ou chaves, em arquivos criptografados, em vez de texto simples em playbooks ou funções. Esses arquivos do vault podem então ser distribuídos ou colocados no controle de origem.
-
-Para habilitar esse recurso, uma ferramenta de linha de comando - ansible-vault - é usada para editar arquivos, e um sinalizador de linha de comando ( --ask-vault-pass, --vault-password-fileou --vault-id) é usado. Como alternativa, você pode especificar o local de um arquivo de senha ou comandar o Ansible para sempre solicitar a senha no seu arquivo ansible.cfg. Essas opções não exigem o uso de sinalizador de linha de comando.
+  Para habilitar esse recurso, uma ferramenta de linha de comando - ansible-vault - é usada para editar arquivos, e um sinalizador de linha de comando ( --ask-vault-pass, --vault-password-fileou --vault-id) é usado. Como alternativa, você pode especificar o local de um arquivo de senha ou comandar o Ansible para sempre solicitar a senha no seu arquivo ansible.cfg. Essas opções não exigem o uso de sinalizador de linha de comando.
 {.is-info}
 
 # PARA CONFIGURAR O VAULT NO HOST.YAML CRIE UM DIRETORIO NO /ETC/ANSIBLE.
