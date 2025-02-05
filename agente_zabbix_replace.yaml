@@ -1,0 +1,48 @@
+---
+- name: Acesso ao servidor
+  hosts: 'ip ou hostname de onde vai instalar o zabixx agent'
+  vars:
+    srv: 'ip do servidor do zabbix'
+    # Essa variavel abaixo reconhece o nome da maquina local onde ta sendo instalado o agent zabbix e coloca esse nome no .conf do zabbix 
+    hst: "{{ hostvars[inventory_hostname]['ansible_hostname']}}"
+  tasks:
+    # baixando repositorio oficial do zabbix agente usando o wget
+    - name: Dowload repositorio zabbix.deb
+      ansible.builtin.get_url:
+        url: https://repo.zabbix.com/zabbix/6.4/ubuntu/pool/main/z/zabbix-release/zabbix-release_6.4-1+ubuntu22.04_all.deb
+        dest: /home/higor/
+    # instalando repositorio zabbix usando o comando dpkg
+    - name: Install zabbix-agent
+      become: true
+      command: dpkg -i /home/higor/zabbix-release_6.4-1+ubuntu22.04_all.deb
+    # utualizar todos os pacotes para uma versão mais recente 
+    - name: update all package
+      become: true
+      apt:
+        update_cache: true
+    # instalando zabbix agent 
+    - name: apt install zabbix-agent
+      become: true
+      apt:
+        name: zabbix-agent
+        state: present
+        update_cache: true
+    # Editar o arquivo zabbix_agentd.conf alterar o Hostname o ip do Server e ServerActive
+    - name: Replace ip server file zabbix_agentd.conf
+      become: true
+      ansible.builtin.replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: 'Server=127.0.0.1'
+        replace: 'Server={{ srv }}'
+    - name: Replace ip ServerActive
+      become: true 
+      ansible.builtin.replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: 'ServerActive=127.0.0.1'
+        replace: 'ServerActive={{ srv }}'
+    - name: replace Hostname
+      become: true
+      ansible.builtin.replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: 'Hostname=Zabbix server'
+        replace: 'Hostname={{ hst }}'
